@@ -38,14 +38,14 @@ describe('SocketServer', function() {
 
     });
 
+    it('#invoke', function(done) {
+        var socket = new Socket('http://localhost:' + port, {
+            forceNew: true,
+            reconnection: false
+        });
 
-    var socket = new Socket('http://localhost:' + port, {
-        forceNew: true,
-        reconnection: false
-    });
+        socket.on('connect', function() {
 
-    socket.on('connect', function() {
-        it('#invoke', function(done) {
 
             socket.on('result', function(response) {
                 assert.equal(response.data.res, "login ok");
