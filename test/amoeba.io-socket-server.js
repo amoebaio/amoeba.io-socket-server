@@ -1,7 +1,7 @@
 var assert = require("assert");
 var Amoeba = require("amoeba.io");
 var LocalClient = require("amoeba.io-local-client");
-var SocketServer = require("../lib/amoeba.io-socket-server");
+var SocketServer = require("../lib/amoeba-socket-server");
 var ServerIO = require('socket.io');
 var Socket = require('socket.io-client');
 
