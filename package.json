@@ -1,6 +1,6 @@
 {
   "name": "amoeba.io-socket-server",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Socket server for amoeba.io",
   "main": "index.js",
   "directories": {
@@ -25,8 +25,8 @@
   },
   "homepage": "https://github.com/amoebaio/amoeba.io-socket-server",
   "dependencies": {
-    "amoeba.io": "^0.0.5",
-    "amoeba.io-local-client": "^0.0.1",
+    "amoeba.io": "^0.0.8",
+    "amoeba.io-local-client": "^0.0.3",
     "socket.io": "^1.3.4"
   },
   "devDependencies": {

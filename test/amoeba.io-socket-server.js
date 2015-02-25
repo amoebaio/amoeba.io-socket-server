@@ -5,7 +5,7 @@ var SocketServer = require("../lib/amoeba-socket-server");
 var ServerIO = require('socket.io');
 var Socket = require('socket.io-client');
 
-
+var port = "8090";
 Auth = function() {};
 
 Auth.prototype.login = function(data, callback) {
@@ -28,9 +28,11 @@ amoeba.service("auth", new LocalClient(new Auth()));
 
 io = new ServerIO();
 io.listen(port).on('connection', function(socket) {
+    socket.on('error', function(){
+        //error received on SocketServer
+    });
     amoeba.server(new SocketServer(socket));
 });
-
 
 describe('SocketServer', function() {
 
@@ -43,7 +45,6 @@ describe('SocketServer', function() {
             forceNew: true,
             reconnection: false
         });
-
         socket.on('connect', function() {
 
 
@@ -63,4 +64,54 @@ describe('SocketServer', function() {
         });
     });
 
+
+    it('#invoke unknown service', function(done) {
+        var socket = new Socket('http://localhost:' + port, {
+            forceNew: true,
+            reconnection: false
+        });
+
+        socket.on('connect', function() {
+
+            socket.on('result', function(response) {
+                assert.equal(response.err.message, "Service 'auths' not found");
+                done();
+            });
+
+            socket.emit('invoke', {
+                id: "4",
+                service: "auths",
+                method: "login",
+                data: {
+                    login: "admin",
+                    password: "pass"
+                }
+            });
+        });
+    });
+
+    it('#invoke unknown method', function(done) {
+        var socket = new Socket('http://localhost:' + port, {
+            forceNew: true,
+            reconnection: false
+        });
+
+        socket.on('connect', function() {
+
+            socket.on('result', function(response) {
+                assert.equal(response.err.message, "Service 'auth' has no method 'logins'");
+                done();
+            });
+
+            socket.emit('invoke', {
+                id: "4",
+                service: "auth",
+                method: "logins",
+                data: {
+                    login: "admin",
+                    password: "pass"
+                }
+            });
+        });
+    });
 });
