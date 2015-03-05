@@ -24,7 +24,7 @@ Auth.prototype.login = function(data, callback) {
 var port = "8090";
 
 amoeba = new Amoeba();
-amoeba.service("auth", new LocalClient(new Auth()));
+amoeba.use("auth", new LocalClient(new Auth()));
 
 io = new ServerIO();
 io.listen(port).on('connection', function(socket) {
@@ -54,7 +54,7 @@ describe('SocketServer', function() {
             });
             socket.emit('invoke', {
                 id: "4",
-                service: "auth",
+                use: "auth",
                 method: "login",
                 data: {
                     login: "admin",
@@ -65,7 +65,7 @@ describe('SocketServer', function() {
     });
 
 
-    it('#invoke unknown service', function(done) {
+    it('#invoke unknown use', function(done) {
         var socket = new Socket('http://localhost:' + port, {
             forceNew: true,
             reconnection: false
@@ -74,13 +74,13 @@ describe('SocketServer', function() {
         socket.on('connect', function() {
 
             socket.on('result', function(response) {
-                assert.equal(response.err.message, "Service 'auths' not found");
+                assert.ok(response.err.message!==null);
                 done();
             });
 
             socket.emit('invoke', {
                 id: "4",
-                service: "auths",
+                use: "auths",
                 method: "login",
                 data: {
                     login: "admin",
@@ -99,13 +99,13 @@ describe('SocketServer', function() {
         socket.on('connect', function() {
 
             socket.on('result', function(response) {
-                assert.equal(response.err.message, "Service 'auth' has no method 'logins'");
+                assert.equal(response.err.message, "Object 'auth' has no method 'logins'");
                 done();
             });
 
             socket.emit('invoke', {
                 id: "4",
-                service: "auth",
+                use: "auth",
                 method: "logins",
                 data: {
                     login: "admin",
