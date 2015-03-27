@@ -27,8 +27,8 @@
   "devDependencies": {
     "socket.io": "^1.3.4",
     "socket.io-client": "^1.3.4",
-    "amoeba.io": "^0.0.14",
-    "amoeba.io-local-client": "^0.0.5",
+    "amoeba.io": "^0.0.15",
+    "amoeba.io-local-client": "^0.0.6",
     "grunt": "^0.4.5",
     "grunt-contrib-jshint": "~0.10.0",
     "grunt-contrib-nodeunit": "~0.4.1",
@@ -36,6 +36,6 @@
     "grunt-browserify": "^3.4.0"
   },
   "dependencies": {
-    "chaining-tool": "0.0.2"
+    "chaining-tool": "0.0.3"
   }
 }

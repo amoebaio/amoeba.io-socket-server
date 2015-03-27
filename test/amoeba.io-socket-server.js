@@ -8,20 +8,33 @@ var Socket = require('socket.io-client');
 var tester = 0;
 
 var port = "8090";
-Auth = function() {};
-Auth.prototype.method1 = function() {
+
+Auth = function() {
+
+};
+
+Auth.prototype.method1 = function(callback) {
     tester = 1;
+    if(callback){
+        assert.ok(false);
+    }
 };
 
 Auth.prototype.method2 = function(callback) {
     callback(null, "ok");
 };
 
-Auth.prototype.method3 = function(param) {
+Auth.prototype.method3 = function(param, callback) {
     tester = param.set;
+    if(callback){
+        assert.ok(false);
+    }
 };
-Auth.prototype.method4 = function(param1, param2, param3) {
+Auth.prototype.method4 = function(param1, param2, param3, callback) {
     tester = param1 + param2 + param3;
+    if(callback){
+        assert.ok(false);
+    }
 };
 Auth.prototype.method5 = function(param, callback) {
     callback(null, param.set);
@@ -29,6 +42,11 @@ Auth.prototype.method5 = function(param, callback) {
 Auth.prototype.method6 = function(param1, param2, param3, callback) {
     callback(null, param1 + param2 + param3);
 };
+
+Auth.prototype.scopeTest = function(data, callback) {
+    this.login(data, callback);
+};
+
 Auth.prototype.login = function(login, password, callback) {
     if (login == "admin" && password == "pass") {
         callback(null, {
@@ -39,8 +57,8 @@ Auth.prototype.login = function(login, password, callback) {
             "res": "login fail"
         }, null);
     }
-
 };
+
 
 var port = "8090";
 
