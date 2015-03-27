@@ -1,6 +1,6 @@
 {
   "name": "amoeba.io-socket-server",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "Socket server for amoeba.io",
   "main": "index.js",
   "directories": {
