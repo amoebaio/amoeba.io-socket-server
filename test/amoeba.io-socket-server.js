@@ -232,7 +232,7 @@ describe('SocketServer', function() {
         socket.on('connect', function() {
 
             socket.on('result', function(response) {
-                assert.ok(response.err.message !== null);
+                assert.ok(response.error.message !== null);
                 done();
             });
 
@@ -257,7 +257,7 @@ describe('SocketServer', function() {
         socket.on('connect', function() {
 
             socket.on('result', function(response) {
-                assert.equal(response.err.message, "Object 'auth' has no method 'logins'");
+                assert.equal(response.error.message, "Object 'auth' has no method 'logins'");
                 done();
             });
 
