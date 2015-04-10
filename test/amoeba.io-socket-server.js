@@ -1,8 +1,7 @@
 var assert = require("assert");
-var Amoeba = require("amoeba.io");
-var LocalClient = require("amoeba.io-local-client");
+var Amoeba = require("../../amoeba.io");
+var LocalClient = require("../../amoeba.io-local-client");
 var SocketServer = require("../lib/amoeba-socket-server");
-var ServerIO = require('socket.io');
 var Socket = require('socket.io-client');
 
 var tester = 0;
@@ -15,7 +14,7 @@ Auth = function() {
 
 Auth.prototype.method1 = function(callback) {
     tester = 1;
-    if(callback){
+    if (callback) {
         assert.ok(false);
     }
 };
@@ -26,13 +25,13 @@ Auth.prototype.method2 = function(callback) {
 
 Auth.prototype.method3 = function(param, callback) {
     tester = param.set;
-    if(callback){
+    if (callback) {
         assert.ok(false);
     }
 };
 Auth.prototype.method4 = function(param1, param2, param3, callback) {
     tester = param1 + param2 + param3;
-    if(callback){
+    if (callback) {
         assert.ok(false);
     }
 };
@@ -58,26 +57,27 @@ Auth.prototype.login = function(login, password, callback) {
         }, null);
     }
 };
-
+Auth.prototype.event1 = function() {
+    this.emit("updated",{some:"data"});
+};
 
 var port = "8090";
 
 amoeba = new Amoeba();
-amoeba.use("auth", new LocalClient(new Auth()));
+amoeba.path("auth").as(new LocalClient(new Auth()));
 
-io = new ServerIO();
-io.listen(port).on('connection', function(socket) {
-    socket.on('error', function() {
-        //error received on SocketServer
-    });
-    amoeba.server(new SocketServer(socket));
+
+new SocketServer(amoeba, {
+    "port": port
 });
+
 
 describe('SocketServer', function() {
 
     beforeEach(function() {
         tester = 0;
     });
+
     it('#invoke empty method', function(done) {
         var socket = new Socket('http://localhost:' + port, {
             forceNew: true,
@@ -88,7 +88,7 @@ describe('SocketServer', function() {
                 assert.ok(false);
             });
             socket.emit('invoke', {
-                use: "auth",
+                path: "auth",
                 method: "method1"
             });
             setTimeout(function() {
@@ -111,7 +111,7 @@ describe('SocketServer', function() {
             });
             socket.emit('invoke', {
                 id: 4,
-                use: "auth",
+                path: "auth",
                 method: "method2"
             });
         });
@@ -127,7 +127,7 @@ describe('SocketServer', function() {
                 assert.ok(false);
             });
             socket.emit('invoke', {
-                use: "auth",
+                path: "auth",
                 method: "method3",
                 params: {
                     set: 5
@@ -151,7 +151,7 @@ describe('SocketServer', function() {
                 assert.ok(false);
             });
             socket.emit('invoke', {
-                use: "auth",
+                path: "auth",
                 method: "method4",
                 params: [1, 2, 3]
             });
@@ -175,7 +175,7 @@ describe('SocketServer', function() {
             });
             socket.emit('invoke', {
                 id: 4,
-                use: "auth",
+                path: "auth",
                 method: "method5",
                 params: {
                     "set": 5
@@ -183,6 +183,7 @@ describe('SocketServer', function() {
             });
         });
     });
+
     it('#invoke params method with callback', function(done) {
         var socket = new Socket('http://localhost:' + port, {
             forceNew: true,
@@ -195,12 +196,13 @@ describe('SocketServer', function() {
             });
             socket.emit('invoke', {
                 id: 4,
-                use: "auth",
+                path: "auth",
                 method: "method6",
                 params: [1, 2, 3]
             });
         });
     });
+
     it('#invoke', function(done) {
         var socket = new Socket('http://localhost:' + port, {
             forceNew: true,
@@ -213,7 +215,7 @@ describe('SocketServer', function() {
             });
             socket.emit('invoke', {
                 id: "4",
-                use: "auth",
+                path: "auth",
                 method: "login",
                 params: ["admin", "pass"]
             });
@@ -236,7 +238,7 @@ describe('SocketServer', function() {
 
             socket.emit('invoke', {
                 id: "4",
-                use: "auths",
+                path: "auths",
                 method: "login",
                 params: {
                     login: "admin",
@@ -261,7 +263,7 @@ describe('SocketServer', function() {
 
             socket.emit('invoke', {
                 id: "4",
-                use: "auth",
+                path: "auth",
                 method: "logins",
                 params: {
                     login: "admin",
@@ -270,4 +272,5 @@ describe('SocketServer', function() {
             });
         });
     });
+  
 });

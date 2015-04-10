@@ -1,6 +1,6 @@
 {
   "name": "amoeba.io-socket-server",
-  "version": "0.0.8",
+  "version": "0.1.0",
   "description": "Socket server for amoeba.io",
   "main": "index.js",
   "directories": {
@@ -25,10 +25,9 @@
   },
   "homepage": "https://github.com/amoebaio/amoeba.io-socket-server",
   "devDependencies": {
-    "socket.io": "^1.3.4",
     "socket.io-client": "^1.3.4",
-    "amoeba.io": "^0.0.15",
-    "amoeba.io-local-client": "^0.0.6",
+    "amoeba.io": "^0.1.0",
+    "amoeba.io-local-client": "^0.1.0",
     "grunt": "^0.4.5",
     "grunt-contrib-jshint": "~0.10.0",
     "grunt-contrib-nodeunit": "~0.4.1",
@@ -36,6 +35,7 @@
     "grunt-browserify": "^3.4.0"
   },
   "dependencies": {
+    "socket.io": "^1.3.4",
     "chaining-tool": "0.0.3"
   }
 }
