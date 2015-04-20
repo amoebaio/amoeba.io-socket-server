@@ -1,6 +1,6 @@
 var assert = require("assert");
-var Amoeba = require("../../amoeba.io");
-var LocalClient = require("../../amoeba.io-local-client");
+var Amoeba = require("amoeba.io");
+var LocalClient = require("amoeba.io-local-client");
 var SocketServer = require("../lib/amoeba-socket-server");
 var Socket = require('socket.io-client');
 
@@ -129,9 +129,9 @@ describe('SocketServer', function() {
             socket.emit('invoke', {
                 path: "auth",
                 method: "method3",
-                params: {
+                arguments: [{
                     set: 5
-                }
+                }]
             });
             setTimeout(function() {
                 assert.equal(tester, 5);
@@ -153,7 +153,7 @@ describe('SocketServer', function() {
             socket.emit('invoke', {
                 path: "auth",
                 method: "method4",
-                params: [1, 2, 3]
+                arguments: [1, 2, 3]
             });
             setTimeout(function() {
                 assert.equal(tester, 6);
@@ -177,9 +177,9 @@ describe('SocketServer', function() {
                 id: 4,
                 path: "auth",
                 method: "method5",
-                params: {
+                arguments: [{
                     "set": 5
-                }
+                }]
             });
         });
     });
@@ -198,7 +198,7 @@ describe('SocketServer', function() {
                 id: 4,
                 path: "auth",
                 method: "method6",
-                params: [1, 2, 3]
+                arguments: [1, 2, 3]
             });
         });
     });
@@ -217,7 +217,7 @@ describe('SocketServer', function() {
                 id: "4",
                 path: "auth",
                 method: "login",
-                params: ["admin", "pass"]
+                arguments: ["admin", "pass"]
             });
         });
     });
@@ -240,7 +240,7 @@ describe('SocketServer', function() {
                 id: "4",
                 path: "auths",
                 method: "login",
-                params: {
+                arguments: {
                     login: "admin",
                     password: "pass"
                 }
@@ -265,10 +265,10 @@ describe('SocketServer', function() {
                 id: "4",
                 path: "auth",
                 method: "logins",
-                params: {
+                arguments: [{
                     login: "admin",
                     password: "pass"
-                }
+                }]
             });
         });
     });
